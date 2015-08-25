@@ -45,17 +45,17 @@ void init_trackbars() {
 
 Point find_center(Mat img, Mat& drawing, Scalar col) {
 	vector<vector<Point> > contours;
-    vector<Vec4i> hierarchy;
+	vector<Vec4i> hierarchy;
 	Rect bounding_rect;
 	int largest_area = 0; 
-    findContours(img, contours, hierarchy, CV_RETR_CCOMP, CV_CHAIN_APPROX_SIMPLE);
-    for(int i = 0; i< contours.size(); i++)
-    {
+	findContours(img, contours, hierarchy, CV_RETR_CCOMP, CV_CHAIN_APPROX_SIMPLE);
+	for(int i = 0; i< contours.size(); i++)
+	{
     	double a = contourArea(contours[i], false); 
-       	if(a > largest_area){
-       		largest_area = a;
-       		bounding_rect = boundingRect(contours[i]); 
-       	}
+		if(a > largest_area){
+			largest_area = a;
+			bounding_rect = boundingRect(contours[i]); 
+		}
 	}
 	Point p1 = bounding_rect.tl();
 	Point p2 = bounding_rect.br();
