@@ -8,7 +8,7 @@
 using namespace cv;
 using namespace std;
 
-Mat src, imgHSV, head, tail;
+Mat src, imgHSV, head, tail, digits;
 
 int h11 = 59;
 int s11 = 79;
@@ -24,23 +24,37 @@ int h22 = 238;
 int s22 = 243;
 int v22 = 268;
 
+int h31 = 0;
+int s31 = 0;
+int v31 = 201;
+int h32 = 146;
+int s32 = 26;
+int v32 = 270;
+
 const int TMAX = 350;
 
 void init_trackbars() {
 	namedWindow("Head", 1);
 	namedWindow("Tail", 1);
-	createTrackbar("H1", "Head", &h11, TMAX);
-	createTrackbar("S1", "Head", &s11, TMAX);
-	createTrackbar("V1", "Head", &v11, TMAX);
-	createTrackbar("H2", "Head", &h12, TMAX);
-	createTrackbar("S2", "Head", &s12, TMAX);
-	createTrackbar("V2", "Head", &v12, TMAX);
-	createTrackbar("H1", "Tail", &h21, TMAX); 
-	createTrackbar("S1", "Tail", &s21, TMAX);
-	createTrackbar("V1", "Tail", &v21, TMAX);
-	createTrackbar("H2", "Tail", &h22, TMAX);
-	createTrackbar("S2", "Tail", &s22, TMAX);
-	createTrackbar("V2", "Tail", &v22, TMAX);
+	namedWindow("Digits", 1);
+	// createTrackbar("H1", "Head", &h11, TMAX);
+	// createTrackbar("S1", "Head", &s11, TMAX);
+	// createTrackbar("V1", "Head", &v11, TMAX);
+	// createTrackbar("H2", "Head", &h12, TMAX);
+	// createTrackbar("S2", "Head", &s12, TMAX);
+	// createTrackbar("V2", "Head", &v12, TMAX);
+	// createTrackbar("H1", "Tail", &h21, TMAX); 
+	// createTrackbar("S1", "Tail", &s21, TMAX);
+	// createTrackbar("V1", "Tail", &v21, TMAX);
+	// createTrackbar("H2", "Tail", &h22, TMAX);
+	// createTrackbar("S2", "Tail", &s22, TMAX);
+	// createTrackbar("V2", "Tail", &v22, TMAX);
+	createTrackbar("H1", "Digits", &h31, TMAX); 
+	createTrackbar("S1", "Digits", &s31, TMAX);
+	createTrackbar("V1", "Digits", &v31, TMAX);
+	createTrackbar("H2", "Digits", &h32, TMAX);
+	createTrackbar("S2", "Digits", &s32, TMAX);
+	createTrackbar("V2", "Digits", &v32, TMAX);
 }
 
 Point find_center(Mat img, Mat& drawing, Scalar col) {
@@ -74,12 +88,14 @@ int main(int argc, char const *argv[])
 		cvtColor(src, imgHSV, CV_BGR2HSV);
 		inRange(imgHSV, Scalar(h11, s11, v11), Scalar(h12, s12, v12), head);
 		inRange(imgHSV, Scalar(h21, s21, v21), Scalar(h22, s22, v22), tail);
+		inRange(imgHSV, Scalar(h31, s31, v31), Scalar(h32, s32, v32), digits);
 		//imshow("HEAD", head);
 		//imshow("TAIL", tail);
+		imshow("DIGITS", digits);
 		Point c1 = find_center(head, drawing, Scalar(255, 0, 0));
 		Point c2 = find_center(tail, drawing, Scalar(255, 255, 15));
 		imshow("Main Vid", src);
-		imshow("Dots", drawing);
+		//imshow("Dots", drawing);
 		if (waitKey(30) >= 0) {
 			break;
 		}
