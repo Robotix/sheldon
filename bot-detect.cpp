@@ -1,9 +1,7 @@
 #include "opencv2/highgui/highgui.hpp"
 #include "opencv2/imgproc/imgproc.hpp"
 #include "opencv2/core/core.hpp"
-#include <iostream>
-#include <stdio.h>
-#include <stdlib.h>
+#include <bits/stdc++.h>
 
 using namespace cv;
 using namespace std;
@@ -36,7 +34,7 @@ const int TMAX = 350;
 void init_trackbars() {
 	namedWindow("Head", 1);
 	namedWindow("Tail", 1);
-	namedWindow("Digits", 1);
+	// namedWindow("Digits", 1);
 	// createTrackbar("H1", "Head", &h11, TMAX);
 	// createTrackbar("S1", "Head", &s11, TMAX);
 	// createTrackbar("V1", "Head", &v11, TMAX);
@@ -49,12 +47,12 @@ void init_trackbars() {
 	// createTrackbar("H2", "Tail", &h22, TMAX);
 	// createTrackbar("S2", "Tail", &s22, TMAX);
 	// createTrackbar("V2", "Tail", &v22, TMAX);
-	createTrackbar("H1", "Digits", &h31, TMAX); 
-	createTrackbar("S1", "Digits", &s31, TMAX);
-	createTrackbar("V1", "Digits", &v31, TMAX);
-	createTrackbar("H2", "Digits", &h32, TMAX);
-	createTrackbar("S2", "Digits", &s32, TMAX);
-	createTrackbar("V2", "Digits", &v32, TMAX);
+	// createTrackbar("H1", "Digits", &h31, TMAX); 
+	// createTrackbar("S1", "Digits", &s31, TMAX);
+	// createTrackbar("V1", "Digits", &v31, TMAX);
+	// createTrackbar("H2", "Digits", &h32, TMAX);
+	// createTrackbar("S2", "Digits", &s32, TMAX);
+	// createTrackbar("V2", "Digits", &v32, TMAX);
 }
 
 Point find_center(Mat img, Mat& drawing, Scalar col) {
@@ -81,7 +79,7 @@ Point find_center(Mat img, Mat& drawing, Scalar col) {
 int main(int argc, char const *argv[])
 {
 	init_trackbars();
-	VideoCapture cap("vids/vid4.wmv");
+	VideoCapture cap("vids/vid3.wmv");
 	cap >> src;
 	Mat drawing(src.rows, src.cols, CV_8UC3, Scalar(0, 0, 0));
 	while (1) {
@@ -89,13 +87,17 @@ int main(int argc, char const *argv[])
 		inRange(imgHSV, Scalar(h11, s11, v11), Scalar(h12, s12, v12), head);
 		inRange(imgHSV, Scalar(h21, s21, v21), Scalar(h22, s22, v22), tail);
 		inRange(imgHSV, Scalar(h31, s31, v31), Scalar(h32, s32, v32), digits);
-		//imshow("HEAD", head);
-		//imshow("TAIL", tail);
-		imshow("DIGITS", digits);
+		// imshow("HEAD", head);
+		// imshow("TAIL", tail);
+		//imshow("DIGITS", digits);
 		Point c1 = find_center(head, drawing, Scalar(255, 0, 0));
 		Point c2 = find_center(tail, drawing, Scalar(255, 255, 15));
+
+		float angle = atan((float)(c2.y - c1.y) / (float)(c2.x - c1.x)) * 180. / 3.14;
+		cout << angle << endl;
+
 		imshow("Main Vid", src);
-		//imshow("Dots", drawing);
+		imshow("Dots", drawing);
 		if (waitKey(30) >= 0) {
 			break;
 		}
